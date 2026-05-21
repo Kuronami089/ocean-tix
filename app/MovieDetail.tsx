@@ -11,8 +11,6 @@ import { useRealtimeSeats } from "@/hooks/useRealtimeSeats";
 
 
 
-
-
 interface MovieJadwalTabProps {
   user?: any;
   openAuthModal?: () => void;
@@ -110,7 +108,7 @@ const MovieJadwalTab: React.FC<MovieJadwalTabProps> = ({ user, openAuthModal, mo
           <button
             key={i}
             onClick={() => setSelectedDate(i)}
-            className={`flex-none min-w-[75px] md:min-w-[85px] py-3 px-2 rounded-xl border transition-all flex flex-col items-center justify-center gap-1 ${selectedDate === i ? "bg-[#1e293b] border-[#1e293b]" : "bg-transparent border-white/10 hover:bg-white/5"}`}
+            className={`flex-none min-w-[75px] md:min-w-[85px] py-3 px-2 rounded-xl border transition-all flex flex-col items-center justify-center gap-1 ${selectedDate === i ? "bg-[#1e293b] border-cyan-500/50 text-white" : "border-white/10 text-slate-400 hover:border-white/20"}`}
           >
             <p className={`text-sm md:text-base font-bold ${selectedDate === i ? "text-white" : "text-slate-300"}`}>
               {day.dateNum} {day.month}
@@ -136,7 +134,7 @@ const MovieJadwalTab: React.FC<MovieJadwalTabProps> = ({ user, openAuthModal, mo
         </div>
         <button
           onClick={() => setShowFilter(!showFilter)}
-          className={`flex-none flex items-center gap-2 px-5 py-3 rounded-full border transition-all text-sm font-semibold ${showFilter ? "bg-white/10 border-white/20 text-white" : "bg-transparent border-white/20 text-slate-300 hover:bg-white/5"}`}
+          className={`flex-none flex items-center gap-2 px-5 py-3 rounded-full border transition-all text-sm font-semibold ${showFilter ? "bg-white/10 border-white/20 text-white" : "bg-transparent border-white/20 text-slate-400 hover:text-white"}`}
         >
           <Filter className="w-4 h-4" /> Filter
         </button>
@@ -249,7 +247,7 @@ const MovieJadwalTab: React.FC<MovieJadwalTabProps> = ({ user, openAuthModal, mo
                           setSeatCount(1);
                         }
                       }}
-                      className={`py-2 px-4 rounded-lg text-sm font-semibold transition-all ${isPast ? "bg-white/5 text-slate-600 border border-transparent cursor-not-allowed opacity-50" : selectedSeatInfo?.time === time && selectedSeatInfo?.theater.id === theater.id ? "bg-cyan-600 text-white border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] scale-105" : "bg-white/10 border border-transparent text-white hover:border-white/50 hover:bg-transparent"}`}
+                      className={`py-2 px-4 rounded-lg text-sm font-semibold transition-all ${isPast ? "bg-white/5 text-slate-600 border border-transparent cursor-not-allowed opacity-50" : "bg-cyan-600/20 border border-cyan-500/50 text-white hover:bg-cyan-600/40"}`}
                     >
                       {time}
                     </button>
@@ -522,100 +520,7 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
 
   return (
     <div className="min-h-screen bg-[#000814] text-white font-sans">
-      {/* STICKY TOP NAVBAR — matches main page style */}
-      <nav className="flex justify-between items-center p-4 md:p-5 md:px-10 sticky top-0 bg-[#000814]/80 backdrop-blur-md z-50 border-b border-white/5 h-[70px] md:h-[90px] gap-4">
-        {/* Left: Back + Logo + Location */}
-        <div className="flex items-center gap-3 md:gap-6 flex-shrink-0">
-          <button
-            onClick={onBack}
-            className="p-2 hover:bg-white/10 rounded-full transition-all"
-            aria-label="Kembali"
-          >
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <span
-            onClick={onBack}
-            className="text-xl md:text-2xl font-black italic tracking-tight uppercase cursor-pointer select-none"
-          >
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-600 bg-clip-text text-transparent">
-              OCEAN{"\u00A0"}
-            </span>
-            <span className="text-white">TIX</span>
-          </span>
-          <div
-            onClick={() => setShowLocationModal(true)}
-            className="flex items-center gap-2 bg-slate-800/50 px-3 md:px-5 py-2 md:py-2.5 rounded-full border border-slate-700/50 cursor-pointer hover:border-cyan-500/50 transition-all"
-          >
-            <MapPin className="w-3 h-3 md:w-4 md:h-4 text-cyan-400" />
-            <span className="text-[9px] md:text-[11px] font-black uppercase tracking-widest text-slate-300 truncate max-w-[80px] md:max-w-none">
-              {selectedCity}
-            </span>
-          </div>
-        </div>
-
-        {/* Right: Promo + Bell */}
-        <div className="flex items-center gap-3 md:gap-8 text-[9px] md:text-[11px] font-bold uppercase tracking-widest flex-shrink-0">
-          <a
-            href="/promo"
-            className="text-slate-400 hover:text-white cursor-pointer transition-colors hidden sm:block"
-          >
-            Promo
-          </a>
-          <a
-            href="/notifications"
-            className="relative p-2 text-slate-400 hover:text-cyan-400 transition-all active:scale-95"
-          >
-            <Bell className="w-5 h-5 md:w-6 md:h-6" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#000814]" />
-          </a>
-        </div>
-      </nav>
-
-      {/* LOCATION MODAL */}
-      {showLocationModal && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => { setShowLocationModal(false); setLocationSearch(""); }} />
-          <div className="relative w-full max-w-sm bg-[#0d1b2a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-              <h3 className="font-black text-base uppercase tracking-tight">Pilih Kota</h3>
-              <button onClick={() => { setShowLocationModal(false); setLocationSearch(""); }} className="p-2 hover:bg-white/10 rounded-full">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="px-4 pt-4 pb-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Cari kota..."
-                  value={locationSearch}
-                  onChange={e => setLocationSearch(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white outline-none focus:border-cyan-500/50 placeholder-slate-500"
-                />
-              </div>
-            </div>
-            <div className="px-4 pb-4 max-h-64 overflow-y-auto space-y-1">
-              {CITIES.filter(c => c.toLowerCase().includes(locationSearch.toLowerCase())).map(city => (
-                <button
-                  key={city}
-                  onClick={() => { setSelectedCity(city); setShowLocationModal(false); setLocationSearch(""); }}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                    city === selectedCity
-                      ? "bg-cyan-600 text-white"
-                      : "text-slate-300 hover:bg-white/5"
-                  }`}
-                >
-                  {city}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL TRAILER (Tetap sama) */}
+      {/* MODAL TRAILER */}
       {showTrailer && videoKey && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <div
@@ -640,7 +545,7 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
         </div>
       )}
 
-      {/* HERO SECTION (Tetap sama) */}
+      {/* HERO SECTION */}
       <section className="relative min-h-[60vh] w-full pt-6 pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -719,7 +624,7 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
                       : "TBA"}
                   </span>
                   <div
-                    className={`px-2 py-1.5 rounded-md text-[10px] font-black border ${movie.age_rating === "R" || movie.age_rating?.includes("17") ? "bg-red-600/20 border-red-500 text-red-500" : "bg-green-600/20 border-green-500 text-green-500"}`}
+                    className={`px-2 py-1.5 rounded-md text-[10px] font-black border ${movie.age_rating === "R" || movie.age_rating?.includes("17") ? "bg-red-600/20 border-red-500 text-red-500" : movie.age_rating?.includes("13") ? "bg-yellow-600/20 border-yellow-500 text-yellow-500" : "bg-green-600/20 border-green-500 text-green-500"}`}
                   >
                     {movie.age_rating || "17+"}
                   </div>
@@ -729,6 +634,48 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
           </div>
         </div>
       </section>
+
+      {/* LOCATION MODAL */}
+      {showLocationModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => { setShowLocationModal(false); setLocationSearch(""); }} />
+          <div className="relative w-full max-w-sm bg-[#0d1b2a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+              <h3 className="font-black text-base uppercase tracking-tight">Pilih Kota</h3>
+              <button onClick={() => { setShowLocationModal(false); setLocationSearch(""); }} className="p-2 hover:bg-white/10 rounded-full">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="px-4 pt-4 pb-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Cari kota..."
+                  value={locationSearch}
+                  onChange={e => setLocationSearch(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white outline-none focus:border-cyan-500/50 placeholder-slate-500"
+                />
+              </div>
+            </div>
+            <div className="px-4 pb-4 max-h-64 overflow-y-auto space-y-1">
+              {CITIES.filter(c => c.toLowerCase().includes(locationSearch.toLowerCase())).map(city => (
+                <button
+                  key={city}
+                  onClick={() => { setSelectedCity(city); setShowLocationModal(false); setLocationSearch(""); }}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-sm font-bold transition-all ${
+                    city === selectedCity
+                      ? "bg-cyan-600 text-white"
+                      : "text-slate-300 hover:bg-white/5"
+                  }`}
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* TABS SECTION */}
       <section className="max-w-6xl mx-auto px-8 pb-20">
@@ -747,7 +694,7 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
           ))}
         </div>
 
-        {/* --- MODIFIKASI DISINI: Panggil Komponen Jadwal Baru --- */}
+        {/* --- SCHEDULE TAB --- */}
         {activeTab === "jadwal" ? (
           <MovieJadwalTab 
             user={user} 
@@ -759,7 +706,7 @@ const MovieDetailPage: React.FC<MovieDetailProps> = ({
           />
         ) : (
           <div className="max-w-4xl">
-            {/* Bagian Sinopsis & Detail (Tetap sama seperti kodingan asli lo) */}
+            {/* Detail Tab Content */}
             <div className="max-w-3xl text-slate-300 leading-relaxed mb-12">
               <p className="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-2">
                 Sinopsis
